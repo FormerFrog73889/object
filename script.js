@@ -47,33 +47,87 @@ function add_task() {
             date: date_t.value,
             done: false
         })
-        in_p.innerHTML+=`<div class="task">
-        <h5>${name_t.value}</h5>
-        <p>${desk_t.value}</p>
-        <span>${date_t.value}</span>
-        <input type="checkbox" name="" id=""onclick="done_taask()">
-    </div>`
+        save_ls()
+        render()
         name_t.value = ''
         desk_t.value = ''
         date_t.value = ''
     }
     add.style.animation = 'hide 2s'
     add.style.display = 'none'
-    setTimeout(function () {
+    setTimeout(function() {
         add.style.display = 'none'
 
     }, 1999)
-
 }
 let tasks = []
 
 let name_t = document.querySelector('#name')
-
 let desk_t = document.querySelector('#desk')
-
 let date_t = document.querySelector('#date')
 let in_p = document.querySelector('.in')
 let complete = document.querySelector('.complete')
-function done_taask(){
-    complete.innerHTML+=in_p.childElementCount
+
+function done_taask(checkbox) {
+    const task = checkbox.parentNode
+    const parent = task.parentNode
+
+    if (parent.classList.contains('complete')) {
+        complete.removeChild(task)
+        in_p.appendChild(task)
+    } else {
+        in_p.removeChild(task)
+        complete.appendChild(task)
+    }
+    update_task(task)
+    save_ls()
+
+
 }
+
+function save_ls() {
+
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
+function load_ls() {
+    const saved_tasks = localStorage.getItem('tasks')
+    if (saved_tasks) {
+        tasks = JSON.parse(saved_tasks)
+        render()
+    }
+}
+
+function render() {
+    in_p.innerHTML = ''
+    complete.innerHTML = ''
+    tasks.forEach(function(task) {
+            const task_el = document.createElement('div')
+            task_el.classList.add('task')
+            task_el.innerHTML = `
+        <h5>${task.name}</h5>
+        <p>${task.desk}</p>
+        <span>${task.date}</span>
+        <input type="checkbox" name="" id=""onclick="done_taask(this)" ${task.done ? 'checked'  : ''}
+        > `
+
+            if (task.done) {
+                complete.appendChild(task_el)
+
+
+            } else {
+                in_p.appendChild(task_el)
+            }
+        }
+
+    )
+
+}
+
+function update_task(el) {
+    const task_i = Array.from(in_p.children).indexOf(el)
+    tasks[task_i].done = !tasks[task_i].done
+    save_ls()
+
+}
+load_ls()
