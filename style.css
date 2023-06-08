@@ -64,25 +64,28 @@ background-color: rgba(255, 255, 255, 0.4);
     border-radius: 2px;
     margin: 10px 0;
     width: 100%;
-    min-width: max-content;
+    min-width: 100%;
 }
 
 .tasks .in {
-
+    width: 100%;
+    max-width: 100%;
     border: 2px solid rgb(36, 192, 235);
     background-color: rgba(36, 192, 235, 0.2);
 
 }
 
 .tasks .complete {
-
+    width: 100%;
+    max-width: 100%;
     border: 2px solid rgb(36, 235, 36);
     background-color: rgba(36, 235, 36, 0.2);
 
 }
 
 .tasks .failed {
-
+    max-width: 100%;
+width: 100%;
     border: 2px solid rgb(235, 36, 36);
     background-color: rgba(235, 36, 36, 0.2);
     

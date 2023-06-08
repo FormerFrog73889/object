@@ -1,35 +1,49 @@
-let torneo = {}
-torneo = {
-    1: 'a',
-    2: 'b',
-    'zoo': [1, 2, 3]
-}
-console.log(torneo["zoo"])
-let user = {
-    age: 5,
-    name: 'Edik',
-    surename: 'Sheva',
-    lessons: ['P.E.', 'ukraine_language']
-}
-console.log(user.age)
-user.name = 'Anton'
-console.log(user.name)
-user.class = 11
-let n = document.querySelector('.n')
-let s = document.querySelector('.s')
-let a = document.querySelector('.a')
+// let torneo = {}
+// torneo = {
+//     1: 'a',
+//     2: 'b',
+//     'zoo': [1, 2, 3]
+// }
+// console.log(torneo["zoo"])
+// let user = {
+//     age: 5,
+//     name: 'Edik',
+//     surename: 'Sheva',
+//     lessons: ['P.E.', 'ukraine_language']
+// }
+// console.log(user.age)
+// user.name = 'Anton'
+// console.log(user.name)
+// user.class = 11
+// let n = document.querySelector('.n')
+// let s = document.querySelector('.s')
+// let a = document.querySelector('.a')
 
-function show() {
-    user.name = n.value
-    user.surename = s.value
-    user.age = a.value
-    console.log(user.name, user.surename, user.age)
-}
+// function show() {
+//     user.name = n.value
+//     user.surename = s.value
+//     user.age = a.value
+//     console.log(user.name, user.surename, user.age)
+// }
 
 
 
 let add = document.querySelector(".add")
+let tasks = []
 
+let name_t = document.querySelector('#name')
+let desk_t = document.querySelector('#desk')
+let date_t = document.querySelector('#date')
+let in_p = document.querySelector('.in')
+let complete = document.querySelector('.complete')
+function load_ls() {
+    const saved_tasks = localStorage.getItem('tasks')
+    if (saved_tasks) {
+        tasks = JSON.parse(saved_tasks)
+        render()
+    }
+}
+load_ls()
 function show_add() {
     add.style.display = 'block'
     add.style.animation = 'show 2s'
@@ -60,13 +74,6 @@ function add_task() {
 
     }, 1999)
 }
-let tasks = []
-
-let name_t = document.querySelector('#name')
-let desk_t = document.querySelector('#desk')
-let date_t = document.querySelector('#date')
-let in_p = document.querySelector('.in')
-let complete = document.querySelector('.complete')
 
 function done_taask(checkbox) {
     const task = checkbox.parentNode
@@ -75,9 +82,11 @@ function done_taask(checkbox) {
     if (parent.classList.contains('complete')) {
         complete.removeChild(task)
         in_p.appendChild(task)
+ 
     } else {
         in_p.removeChild(task)
         complete.appendChild(task)
+        
     }
     update_task(task)
     save_ls()
@@ -90,13 +99,6 @@ function save_ls() {
     localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
-function load_ls() {
-    const saved_tasks = localStorage.getItem('tasks')
-    if (saved_tasks) {
-        tasks = JSON.parse(saved_tasks)
-        render()
-    }
-}
 
 function render() {
     in_p.innerHTML = ''
@@ -125,9 +127,9 @@ function render() {
 }
 
 function update_task(el) {
-    const task_i = Array.from(in_p.children).indexOf(el)
+    const task_i = tasks.findIndex(obj=>obj.name==el.children[0].textContent)
+    console.log(task_i)
     tasks[task_i].done = !tasks[task_i].done
     save_ls()
 
 }
-load_ls()
